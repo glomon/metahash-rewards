@@ -210,7 +210,7 @@ class Rewards
      */
     public function verify(array $tx): bool
     {
-         $beforeDate =  strtotime('today - 1 second');
+         $beforeDate =  strtotime('yesterday - 1 second');
 
         return isset($tx['isDelegate']) && $tx['status'] === 'ok' && $tx['timestamp'] < $beforeDate;
     }
