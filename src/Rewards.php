@@ -186,7 +186,7 @@ class Rewards
      */
     public function reward(array $txs = []): float
     {
-        $today = strtotime(date('Y-m-d 00:00:00'));
+       $today = strtotime(date('Y-m-d 00:00:00 - 1 second'));
 
         $reward = 0;
         foreach ($txs['result'] as $tx) {
@@ -210,7 +210,7 @@ class Rewards
      */
     public function verify(array $tx): bool
     {
-        $beforeDate = strtotime(date('Y-m-d 00:00:00', strtotime('-24 hour')));
+         $beforeDate =  strtotime('today - 1 second');
 
         return isset($tx['isDelegate']) && $tx['status'] === 'ok' && $tx['timestamp'] < $beforeDate;
     }
