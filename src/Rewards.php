@@ -186,8 +186,8 @@ class Rewards
      */
     public function reward(array $txs = []): float
     {
-       $today = strtotime(date('Y-m-d 00:00:00 - 1 second'));
-
+     //  $today = strtotime(date('Y-m-d 00:00:00 - 1 second'));
+    $today = strtotime(date('Y-m-d 23:59:00', strtotime('-24 hours')));
         $reward = 0;
         foreach ($txs['result'] as $tx) {
             if ($tx['from'] === 'InitialWalletTransaction' && $tx['intStatus'] === 102 && $tx['timestamp'] >= $today) {
@@ -210,7 +210,7 @@ class Rewards
      */
     public function verify(array $tx): bool
     {
-         $beforeDate =  strtotime('yesterday - 1 second');
+          $beforeDate = strtotime(date('Y-m-d 23:59:00', strtotime('-48 hour')));
 
         return isset($tx['isDelegate']) && $tx['status'] === 'ok' && $tx['timestamp'] < $beforeDate;
     }
