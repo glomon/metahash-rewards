@@ -57,7 +57,7 @@ class Rewards
 
         $delegators = [];
         foreach ($txs['result'] as $tx) {
-            if ($this->verify($tx) && $tx['to'] === $node['address']) {
+            if ($this->verify($tx) && $tx['to'] === $node['address'] && $tx['delegated'] === 10000) {
                 $delegators[$tx['from']] = [
                     'address'   => $tx['from'],
                     'delegated' => 0,
