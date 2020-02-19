@@ -29,7 +29,6 @@ class Rewards
      *
      * @param array $skipAddresses
      *
-     * @return array
      */
     public function setSkipList(array $skipAddresses)
     {
@@ -57,7 +56,7 @@ class Rewards
 
         $delegators = [];
         foreach ($txs['result'] as $tx) {
-            if ($this->verify($tx) && $tx['to'] === $node['address'] && $tx['delegated'] === 10000) {
+            if ($this->verify($tx) && $tx['to'] === $node['address']) {
                 $delegators[$tx['from']] = [
                     'address'   => $tx['from'],
                     'delegated' => 0,
@@ -186,8 +185,8 @@ class Rewards
      */
     public function reward(array $txs = []): float
     {
-     //  $today = strtotime(date('Y-m-d 00:00:00 - 1 second'));
-    $today = strtotime(date('Y-m-d 23:59:59', strtotime('-24 hours')));
+        $today = strtotime(date('Y-m-d 23:59:59', strtotime('-24 hour')));
+
         $reward = 0;
         foreach ($txs['result'] as $tx) {
             if ($tx['from'] === 'InitialWalletTransaction' && $tx['intStatus'] === 102 && $tx['timestamp'] >= $today) {
@@ -210,7 +209,7 @@ class Rewards
      */
     public function verify(array $tx): bool
     {
-          $beforeDate = strtotime(date('Y-m-d 23:59:59', strtotime('-48 hour')));
+        $beforeDate = strtotime(date('Y-m-d 00:00:00', strtotime('-24 hour')));
 
         return isset($tx['isDelegate']) && $tx['status'] === 'ok' && $tx['timestamp'] < $beforeDate;
     }
@@ -273,8 +272,8 @@ class Rewards
             } catch (Exception $e) {
                 $results[] = ['message' => $e->getMessage()];
             }
-            // Uncomment line below to add a 2 second delay inbetween payments.
-            // sleep(2);
+            // Uncomment line below to add a 1 second delay inbetween payments.
+            // sleep(1);
         }
 
         return $results;
